@@ -1,16 +1,17 @@
 package ru.practicum.ewm.user.dto;
 
 import lombok.Data;
-import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
+
 
 @NoArgsConstructor
 @Data
 @Builder
 @AllArgsConstructor
-public class UserDtoShort {
-    private Long id;
+public class UserDtoUpdate {
 
-    private String name;
+    private Boolean allowSubscription;
+
 }

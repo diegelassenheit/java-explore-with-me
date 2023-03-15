@@ -1,12 +1,11 @@
 package ru.practicum.ewm.user.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserDto {
 
     private Long id;
@@ -14,4 +13,5 @@ public class UserDto {
     private String email;
 
     private String name;
+    private Boolean allowSubscription;
 }

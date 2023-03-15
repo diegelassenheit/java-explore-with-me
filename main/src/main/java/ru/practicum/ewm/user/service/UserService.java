@@ -2,11 +2,13 @@ package ru.practicum.ewm.user.service;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.exception.NotFoundException;
 import ru.practicum.ewm.user.dto.UserDto;
 import ru.practicum.ewm.user.dto.UserDtoNew;
+import ru.practicum.ewm.user.dto.UserDtoUpdate;
 import ru.practicum.ewm.user.mapper.UserMapper;
 import ru.practicum.ewm.user.model.QUser;
 import ru.practicum.ewm.user.model.User;
@@ -24,6 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
@@ -40,6 +43,7 @@ public class UserService {
 
     public UserDto createUser(UserDtoNew dto) {
         User entity = userMapper.toModel(dto);
+
         return userMapper.toUserDto(userRepository.save(entity));
     }
 
@@ -50,5 +54,21 @@ public class UserService {
         }
 
         userRepository.deleteById(userId);
+    }
+
+    public User getUserOrThrow(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException(String.format("User with userId = %d was not found.", userId));
+        }
+
+        return userRepository.getReferenceById(userId);
+    }
+
+    public UserDto update(Long userId, UserDtoUpdate dto) {
+        User user = getUserOrThrow(userId);
+        modelMapper.map(dto, user);
+
+        return modelMapper.map(userRepository.save(user), UserDto.class);
+
     }
 }
