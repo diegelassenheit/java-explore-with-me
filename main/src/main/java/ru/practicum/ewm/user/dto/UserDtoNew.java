@@ -1,15 +1,13 @@
 package ru.practicum.ewm.user.dto;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserDtoNew {
 
     @NotBlank
@@ -17,4 +15,5 @@ public class UserDtoNew {
 
     @Email
     private String email;
+    private Boolean allowSubscription = true;
 }
